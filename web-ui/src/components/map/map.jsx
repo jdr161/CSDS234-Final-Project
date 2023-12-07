@@ -6,7 +6,7 @@ import {
     Popup,
 } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
-import mapData from '../../data/countrydata/countries.json'
+import mapData from '../../data/countrydata/countries'
 
 // with help from https://github.com/CodingWith-Adam/geoJson-map-with-react-leaflet/blob/master/src/components/MyMap.jsx#L27
 
@@ -17,7 +17,7 @@ function Map() {
 
     const onEachCountry = (country, layer) => {
         const countryName = country.properties.ADMIN;
-        console.log(countryName);
+        // console.log(countryName);
         layer.bindPopup(countryName);
 
         layer.on({
