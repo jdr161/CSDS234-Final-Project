@@ -62,7 +62,7 @@ function Map({ mapData }) {
     };
 
     const geoJSON = useMemo(() => <GeoJSON style={countryStyle} data={mapData.features} onEachFeature={onEachCountry}/>, [] );
-
+    const info = useMemo(() => <Info/>, []);
 
     return (
         <div className="d">
@@ -74,7 +74,7 @@ function Map({ mapData }) {
                         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                     />
                     { geoJSON }
-                    <Info/>
+                    { info }
                     <Legend selected={selected}/>
 
                 </MapContainer>
