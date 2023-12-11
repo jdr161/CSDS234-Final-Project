@@ -24,10 +24,26 @@ const countryStyle = {
     fillOpacity: 0.7,
 };
 
+const gradientArr = [
+    {
+        color: "red",
+        level: "1000+"
+    },
+    {
+        color: "orange",
+        level: "800-1000"
+    },
+    {
+        color: "yellow",
+        level: "600-800"
+    }
+]
+
 // with help from https://github.com/CodingWith-Adam/geoJson-map-with-react-leaflet/blob/master/src/components/MyMap.jsx#L27
 
 function Map({ mapData }) {
     const [selected, setSelected] = useState({})
+    // const [gradientArr, setgradientArr] = useState([])
 
     const logTest = (e) => {
         console.log(e.target)
@@ -65,22 +81,20 @@ function Map({ mapData }) {
         });
     };
 
-    // Because selected updates the state, we need to make sure all of these components do not render
-    // on each change of selected.
+    // Make sure we only rerender on relevant state updates
     const tileLayer = useMemo(() => <TileLayer attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors' url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />, [])
     const geoJSON = useMemo(() => <GeoJSON style={countryStyle} data={mapData.features} onEachFeature={onEachCountry} />, []);
-    const info = useMemo(() => <Info />, []);
+    const info = useMemo(() => <Info gradientArr={gradientArr}/>, [gradientArr]);
+    const legend = useMemo(() => <Legend selected={selected} />, [selected])
 
     return (
         <div className={styles.map}>
-            <div>
-                <MapContainer center={[0, 0]} zoom={3} maxBounds={bounds} minZoom={2} maxZoom={6}>
-                    {tileLayer}
-                    {geoJSON}
-                    {info}
-                    <Legend selected={selected} />
-                </MapContainer>
-            </div>
+            <MapContainer center={[0, 0]} zoom={3} maxBounds={bounds} minZoom={2} maxZoom={6}>
+                { tileLayer }
+                { geoJSON }
+                { info }
+                { legend }
+            </MapContainer>
         </div>
     );
 }

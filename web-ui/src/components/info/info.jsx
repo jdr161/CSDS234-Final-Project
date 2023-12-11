@@ -1,14 +1,16 @@
 import styles from "./info.module.css";
 
-function Info({gradientArr}) {
+function Info({ gradientArr }) {
     console.log(gradientArr)
-    return(
+    return (
         <div className={styles.hoverInfo}>
-            {gradientArr ? gradientArr.map((gradient) => {
-                <div>
-                    <i style={`background: ${gradient.color}`}></i>
-                    {gradient.level}
-                </div>
+            {gradientArr[0] ? gradientArr.map((gradient, index) => {
+                return (
+                    <div key={`gradient_row_${index}`} className={styles.row}>                        
+                        <div style={{ backgroundColor: gradient.color, width: 15, height: 15}}></div>
+                        {gradient.level}
+                    </div>
+                )
             }) : "nothing to see here"}
         </div>
     )
