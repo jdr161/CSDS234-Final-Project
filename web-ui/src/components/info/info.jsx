@@ -1,7 +1,6 @@
 import styles from "./info.module.css";
 
 function Info({ gradientArr }) {
-    console.log(gradientArr)
     return (
         <div className={styles.hoverInfo}>
             {gradientArr[0] ? gradientArr.map((gradient, index) => {
