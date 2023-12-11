@@ -3,7 +3,9 @@
 import requests
 import psycopg2
 from conf_values import *
-from split_big_csv import *
+import split_big_csv as split
+import pandas as pd
+
 
 def update_CSV():
 
@@ -21,39 +23,42 @@ def update_CSV():
     if (bytes_written != num_bytes):
         print("Bad Write")
 
+    dataframe = pd.read_csv(PATH_TO_DIR + CSV_NAME)
+
+    split.create_all(dataframe)
+
 
 def connect_and_update():
 
-    connection = psycopg2.connect(user=DB_USER, password=DB_PASS,
-                                  host=DB_HOST, port=DB_PORT, database=DB_NAME)
+    with psycopg2.connect(user=DB_USER, password=DB_PASS, host=DB_HOST, port=DB_PORT, database=DB_NAME) as connection:
 
-    cursor = connection.cursor()
+        cursor = connection.cursor()
 
-    # open csv
-    f = open(PATH_TO_DIR + CSV_NAME, 'r')
+        # open csv
+        for tablename in DB_TABLES:
+            with open(PATH_TO_DIR + tablename + ".csv", 'r') as f:
+                # skip header
+                f.readline()
 
-    # skip header
-    f.readline()
+                # remove old data
+                cursor.execute("TRUNCATE " + DB_SCHEMA + "." + tablename)
 
-    # remove old data
-    cursor.execute("DELETE FROM " + DB_SCHEMA + "." + DB_TABLE)
+                # commit
+                connection.commit()
 
-    # commit
-    connection.commit()
+                # insert csv
+                cursor.copy_from(f, tablename, sep=',', null="")
 
-    # insert csv
-    cursor.copy_from(f, DB_TABLE, sep=',', null="")
+                # commit
+                connection.commit()
 
-    # commit
-    connection.commit()
-
-    # close
     connection.close()
 
 
 def main():
     update_CSV()
     connect_and_update()
+
 
 if __name__ == "__main__":
     main()
