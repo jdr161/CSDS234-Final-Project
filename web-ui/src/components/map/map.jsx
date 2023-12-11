@@ -6,13 +6,12 @@ import {
     Popup,
 } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
-import mapData from '../../data/countrydata/countries'
 
 //CONSIDER GETTING DATA VIA THIS METHOD: https://vercel.com/guides/loading-static-file-nextjs-api-route
 
 // with help from https://github.com/CodingWith-Adam/geoJson-map-with-react-leaflet/blob/master/src/components/MyMap.jsx#L27
 
-function Map() {
+function Map({ mapData }) {
     const logTest = (e) => {
         console.log(e.target)
     }
