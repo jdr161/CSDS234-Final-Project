@@ -6,12 +6,13 @@ import {
     Popup,
 } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
+import Info from "../info";
 
-//CONSIDER GETTING DATA VIA THIS METHOD: https://vercel.com/guides/loading-static-file-nextjs-api-route
 
 // with help from https://github.com/CodingWith-Adam/geoJson-map-with-react-leaflet/blob/master/src/components/MyMap.jsx#L27
 
 function Map({ mapData }) {
+
     const logTest = (e) => {
         console.log(e.target)
     }
@@ -39,11 +40,19 @@ function Map({ mapData }) {
             <div>
                 <MapContainer center={[40.609787846393196, 20.7890265133657]} zoom={5}>
 
+                    
+                    <TileLayer
+                        attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                    />
                     <GeoJSON
                         style={countryStyle}
                         data={mapData.features}
                         onEachFeature={onEachCountry}
+                        
                     />
+                    <Info/>
+
                 </MapContainer>
             </div>
         </div>
