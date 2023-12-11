@@ -74,7 +74,7 @@ function Map({ mapData }) {
     return (
         <div className={styles.map}>
             <div>
-                <MapContainer center={[0, 0]} zoom={3} maxBounds={bounds} minZoom={2}>
+                <MapContainer center={[0, 0]} zoom={3} maxBounds={bounds} minZoom={2} maxZoom={6}>
                     {tileLayer}
                     {geoJSON}
                     {info}
