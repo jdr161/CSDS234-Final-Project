@@ -5,13 +5,25 @@ import {
     CircleMarker,
     Popup,
 } from "react-leaflet";
+import { useState, useMemo } from "react";
 import "leaflet/dist/leaflet.css";
 import Info from "../info";
+import Legend from "../legend"
+
 
 
 // with help from https://github.com/CodingWith-Adam/geoJson-map-with-react-leaflet/blob/master/src/components/MyMap.jsx#L27
 
 function Map({ mapData }) {
+    const [selected, setSelected] = useState({})
+
+    const countryStyle = {
+        fillColor: "red",
+        fillOpacity: 1,
+        color: "black",
+        weight: 2,
+        fillOpacity: 0.7,
+    };
 
     const logTest = (e) => {
         console.log(e.target)
@@ -19,6 +31,7 @@ function Map({ mapData }) {
 
     const highlightFeature = (e) => {
         var layer = e.target;
+        setSelected(layer.feature.properties);
 
         layer.setStyle({
             weight: 5,
@@ -30,10 +43,10 @@ function Map({ mapData }) {
         layer.bringToFront();
     }
 
-    function resetHighlight(e) {
-        var layer = e.target;
-
+    const resetHighlight = (e) => {
+        var layer = e.target; 
         layer.setStyle(countryStyle);
+        setSelected({})
     }
 
     const onEachCountry = (country, layer) => {
@@ -48,12 +61,8 @@ function Map({ mapData }) {
         });
     };
 
-    const countryStyle = {
-        fillColor: "red",
-        fillOpacity: 1,
-        color: "black",
-        weight: 2,
-    };
+    const geoJSON = useMemo(() => <GeoJSON style={countryStyle} data={mapData.features} onEachFeature={onEachCountry}/>, [] );
+
 
     return (
         <div className="d">
@@ -64,15 +73,9 @@ function Map({ mapData }) {
                         attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                     />
-                    <GeoJSON
-                        style={countryStyle}
-                        data={mapData.features}
-                        onEachFeature={onEachCountry}
-                        // setStyle={highlightFeature}
-                        // resetStyle={resetHighlight}
-                        
-                    />
+                    { geoJSON }
                     <Info/>
+                    <Legend selected={selected}/>
 
                 </MapContainer>
             </div>
