@@ -1,2 +1,4 @@
 conf_values.py
 owid-covid-data.csv
+__pycache__/
+*.csv

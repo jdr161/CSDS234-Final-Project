@@ -3,6 +3,7 @@
 import requests
 import psycopg2
 from conf_values import *
+from split_big_csv import *
 
 def update_CSV():
 
