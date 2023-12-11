@@ -9,6 +9,7 @@ import { useState, useMemo } from "react";
 import "leaflet/dist/leaflet.css";
 import Info from "../info";
 import Legend from "../legend"
+import styles from "./map.module.css"
 
 
 
@@ -65,7 +66,7 @@ function Map({ mapData }) {
     const info = useMemo(() => <Info/>, []);
 
     return (
-        <div className="d">
+        <div className={styles.map}>
             <div>
                 <MapContainer center={[40.609787846393196, 20.7890265133657]} zoom={5}>
                     
