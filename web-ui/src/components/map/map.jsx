@@ -17,6 +17,25 @@ function Map({ mapData }) {
         console.log(e.target)
     }
 
+    const highlightFeature = (e) => {
+        var layer = e.target;
+
+        layer.setStyle({
+            weight: 5,
+            color: '#666',
+            dashArray: '',
+            fillOpacity: 0.7
+        });
+
+        layer.bringToFront();
+    }
+
+    function resetHighlight(e) {
+        var layer = e.target;
+
+        layer.setStyle(countryStyle);
+    }
+
     const onEachCountry = (country, layer) => {
         const countryName = country.properties.ADMIN;
         // console.log(countryName);
@@ -24,6 +43,8 @@ function Map({ mapData }) {
 
         layer.on({
             click: logTest,
+            mouseover: highlightFeature,
+            mouseout: resetHighlight,
         });
     };
 
@@ -36,10 +57,8 @@ function Map({ mapData }) {
 
     return (
         <div className="d">
-            {/*leaflet and react-leaflet*/}
             <div>
                 <MapContainer center={[40.609787846393196, 20.7890265133657]} zoom={5}>
-
                     
                     <TileLayer
                         attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
@@ -49,6 +68,8 @@ function Map({ mapData }) {
                         style={countryStyle}
                         data={mapData.features}
                         onEachFeature={onEachCountry}
+                        // setStyle={highlightFeature}
+                        // resetStyle={resetHighlight}
                         
                     />
                     <Info/>
