@@ -1,0 +1,32 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model cases {
+  iso_code    String @db.VarChar(8)
+  date        String @db.VarChar(10)
+  total_cases Float? @db.Real
+
+  @@id([iso_code, date])
+}
+
+model deaths {
+  iso_code     String @db.VarChar(8)
+  date         String @db.VarChar(10)
+  total_deaths Float? @db.Real
+
+  @@id([iso_code, date])
+}
+
+model vaccinations {
+  iso_code           String  @db.VarChar(8)
+  date               String  @db.VarChar(10)
+  total_vaccinations String? @db.VarChar(50)
+
+  @@id([iso_code, date])
+}
