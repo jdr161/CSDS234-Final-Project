@@ -11,6 +11,7 @@ import "leaflet/dist/leaflet.css";
 import Info from "../info";
 import Legend from "../legend"
 import styles from "./map.module.css"
+import Gradient from "javascript-color-gradient";
 
 var southWest = L.latLng(-85, -180)
 var northEast = L.latLng(85, 180)
@@ -38,8 +39,8 @@ function Map({ mapData, dataType, date }) {
                 "Authorization": process.env.NEXT_PUBLIC_API_AUTHORIZATION
             },
         }
-        var url = ''
-        if (!date){
+        let url = ''
+        if (!date) {
             url = `/api/get-latest-data?dataType=cases`//${dataType}`
         } else {
             url = `/api/get-data-by-date?dataType=cases`//${dataType}?date=${date.toISOString()}`
@@ -49,28 +50,36 @@ function Map({ mapData, dataType, date }) {
             .then((data) => {
                 console.log(data)
                 setData(data)
+                calculateGradientArr(data)
             })
-
-        setgradientArr([{
-            color: "red",
-            level: "1000+"
-        },
-        {
-            color: "orange",
-            level: "800-1000"
-        },
-        {
-            color: "yellow",
-            level: "600-800"
-        }])
     }, [dataType, date])
 
-    const logTest = (e) => {
-        console.log(e.target)
+    const calculateGradientArr = (data) => {
+        const colorArray = new Gradient()
+            .setColorGradient("#3F2CAF", "#e9446a")
+            .getColors();
+        const arr = Object.values(data);
+        const max = Math.max(...arr);
+        const min = Math.min(...arr);
+        let gradArr = new Array(10);
+        for(let i = 0; i < 9; i++){
+            let val = min + i*((max-min)/9)
+            let nextval = min + (i+1)*((max-min)/9)
+            gradArr[9-i] = {
+                color: colorArray[i],
+                level: val.toString().concat("-", nextval.toString())
+            }
+        }
+        let val = min + 9*((max-min)/9)
+        gradArr[0] = {
+            color: colorArray[9],
+            level: val.toString().concat("+")
+        }
+        setgradientArr(gradArr)
     }
 
     const highlightFeature = (e) => {
-        var layer = e.target;
+        let layer = e.target;
         setSelected(layer.feature.properties);
 
         layer.setStyle({
@@ -84,7 +93,7 @@ function Map({ mapData, dataType, date }) {
     }
 
     const resetHighlight = (e) => {
-        var layer = e.target;
+        let layer = e.target;
         layer.setStyle(countryStyle);
         setSelected({})
     }
@@ -95,7 +104,7 @@ function Map({ mapData, dataType, date }) {
         layer.bindPopup(countryName);
 
         layer.on({
-            click: logTest,
+            // click: ,
             mouseover: highlightFeature,
             mouseout: resetHighlight,
         });
