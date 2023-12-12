@@ -27,10 +27,10 @@ export default async function handler(req, res) {
                     new_cases: true,
                 },
             })
-            return res.json(countryCases)
+            return res.json(reduceData(countryCases))
         } else if (req.query.dataType === "deaths") {
             // const groupUsers = await prisma.cases.groupBy({
-            const countryCases = await prisma.newtable.groupBy({
+            const countryDeaths = await prisma.newtable.groupBy({
                 by: ['iso_code'],
                 where: {
                     date: {
@@ -41,10 +41,10 @@ export default async function handler(req, res) {
                     new_cases: true,
                 },
             })
-            return res.json(countryCases)
+            return res.json(reduceData(countryDeaths))
         } else if (req.query.dataType === "vaccinations") {
             // const groupUsers = await prisma.cases.groupBy({
-            const countryCases = await prisma.newtable.groupBy({
+            const countryVaccinations = await prisma.newtable.groupBy({
                 by: ['iso_code'],
                 where: {
                     date: {
@@ -55,7 +55,7 @@ export default async function handler(req, res) {
                     new_cases: true,
                 },
             })
-            return res.json(countryCases)
+            return res.json(reduceData(countryVaccinations))
         } else {
             res.status(400).json({ message: 'dataType not recognized' })
         }

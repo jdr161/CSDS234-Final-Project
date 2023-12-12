@@ -1,4 +1,5 @@
-import prisma from '../../lib/prisma'
+import prisma from '@/lib/prisma'
+import reduceData from '@/lib/reduceData'
 
 export default async function handler(req, res) {
     if (!(req.method === "GET")) {
@@ -19,7 +20,7 @@ export default async function handler(req, res) {
                     new_cases: true,
                 },
             })
-            return res.json(countryCases)
+            return res.json(reduceData(countryCases))
         } else if (req.query.dataType === "deaths") {
             //const countryCases = await prisma.deaths.groupBy({
             const countryDeaths = await prisma.newtable.groupBy({
@@ -28,7 +29,7 @@ export default async function handler(req, res) {
                     new_deaths: true,
                 },
             })
-            return res.json(countryDeaths)
+            return res.json(reduceData(countryDeaths))
         } else if (req.query.dataType === "vaccinations") {
             //const countryCases = await prisma.cases.groupBy({
             const countryVaccinations = await prisma.newtable.groupBy({
@@ -37,7 +38,7 @@ export default async function handler(req, res) {
                     new_vaccinations: true,
                 },
             })
-            return res.json(countryVaccinations)
+            return res.json(reduceData(countryVaccinations))
         } else {
             res.status(400).json({ message: 'dataType not recognized' })
         }
