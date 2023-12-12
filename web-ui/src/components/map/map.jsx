@@ -6,7 +6,7 @@ import {
     Popup,
 } from "react-leaflet";
 import L from "leaflet";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import "leaflet/dist/leaflet.css";
 import Info from "../info";
 import Legend from "../legend"
@@ -24,26 +24,26 @@ const countryStyle = {
     fillOpacity: 0.7,
 };
 
-const gradientArr = [
-    {
-        color: "red",
-        level: "1000+"
-    },
-    {
-        color: "orange",
-        level: "800-1000"
-    },
-    {
-        color: "yellow",
-        level: "600-800"
-    }
-]
-
 // with help from https://github.com/CodingWith-Adam/geoJson-map-with-react-leaflet/blob/master/src/components/MyMap.jsx#L27
 
 function Map({ mapData }) {
     const [selected, setSelected] = useState({})
-    // const [gradientArr, setgradientArr] = useState([])
+    const [gradientArr, setgradientArr] = useState([])
+
+    useEffect(() => {
+        setgradientArr([{
+            color: "red",
+            level: "1000+"
+        },
+        {
+            color: "orange",
+            level: "800-1000"
+        },
+        {
+            color: "yellow",
+            level: "600-800"
+        }])
+    }, [])
 
     const logTest = (e) => {
         console.log(e.target)
