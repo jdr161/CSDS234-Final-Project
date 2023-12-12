@@ -1,8 +1,7 @@
 import { GeoJSON } from "react-leaflet";
-import { useEffect, useMemo, useState } from "react";
 
-function CountryGeoJson({mapData, data, getColor, setSelected}){
-    console.log("rendered geojson")
+
+function CountryGeoJson({ mapData, data, getColor, setSelected }) {
     const countryStyle = {
         fillColor: getColor(),
         fillOpacity: 1,
@@ -44,6 +43,6 @@ function CountryGeoJson({mapData, data, getColor, setSelected}){
     };
 
     return (
-    <GeoJSON style={countryStyle} data={mapData.features} onEachFeature={onEachCountry} />
+        <GeoJSON style={countryStyle} data={mapData.features} onEachFeature={onEachCountry} />
     )
 } export default CountryGeoJson;
