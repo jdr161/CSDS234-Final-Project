@@ -26,11 +26,26 @@ const countryStyle = {
 
 // with help from https://github.com/CodingWith-Adam/geoJson-map-with-react-leaflet/blob/master/src/components/MyMap.jsx#L27
 
-function Map({ mapData }) {
+function Map({ mapData, dataType }) {
     const [selected, setSelected] = useState({})
     const [gradientArr, setgradientArr] = useState([])
+    const [data, setData] = useState({})
 
     useEffect(() => {
+        const fetchOptions = {
+            method: "GET", // *GET, POST, PUT, DELETE, etc.
+            headers: {
+                "Authorization": process.env.NEXT_PUBLIC_API_AUTHORIZATION
+            },
+        }
+        const url = `/api/get-latest-data?dataType=cases`//${dataType}`
+        fetch(url, fetchOptions)
+            .then((res) => res.json())
+            .then((data) => {
+                console.log(data)
+                setData(data)
+            })
+
         setgradientArr([{
             color: "red",
             level: "1000+"
@@ -84,16 +99,16 @@ function Map({ mapData }) {
     // Make sure we only rerender on relevant state updates
     const tileLayer = useMemo(() => <TileLayer attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors' url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />, [])
     const geoJSON = useMemo(() => <GeoJSON style={countryStyle} data={mapData.features} onEachFeature={onEachCountry} />, []);
-    const info = useMemo(() => <Info gradientArr={gradientArr}/>, [gradientArr]);
+    const info = useMemo(() => <Info gradientArr={gradientArr} />, [gradientArr]);
     const legend = useMemo(() => <Legend selected={selected} />, [selected])
 
     return (
         <div className={styles.map}>
             <MapContainer center={[0, 0]} zoom={3} maxBounds={bounds} minZoom={2} maxZoom={6}>
-                { tileLayer }
-                { geoJSON }
-                { info }
-                { legend }
+                {tileLayer}
+                {geoJSON}
+                {info}
+                {legend}
             </MapContainer>
         </div>
     );
