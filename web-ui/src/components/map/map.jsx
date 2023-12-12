@@ -38,10 +38,11 @@ function Map({ mapData, dataType, date }) {
                 "Authorization": process.env.NEXT_PUBLIC_API_AUTHORIZATION
             },
         }
+        var url = ''
         if (!date){
-            const url = `/api/get-latest-data?dataType=cases`//${dataType}`
+            url = `/api/get-latest-data?dataType=cases`//${dataType}`
         } else {
-            const url = `/api/get-data-by-date?dataType=cases`//${dataType}?date=${date.toISOString()}`
+            url = `/api/get-data-by-date?dataType=cases`//${dataType}?date=${date.toISOString()}`
         }
         fetch(url, fetchOptions)
             .then((res) => res.json())
