@@ -1,6 +1,6 @@
 import styles from "./header.module.css"
 
-function Header(){
+function Header({dataType, setDataType, date, setDate}){
     return (
         <div className={styles.header}>
             hello world!

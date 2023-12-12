@@ -26,7 +26,7 @@ const countryStyle = {
 
 // with help from https://github.com/CodingWith-Adam/geoJson-map-with-react-leaflet/blob/master/src/components/MyMap.jsx#L27
 
-function Map({ mapData, dataType }) {
+function Map({ mapData, dataType, date }) {
     const [selected, setSelected] = useState({})
     const [gradientArr, setgradientArr] = useState([])
     const [data, setData] = useState({})
@@ -38,7 +38,11 @@ function Map({ mapData, dataType }) {
                 "Authorization": process.env.NEXT_PUBLIC_API_AUTHORIZATION
             },
         }
-        const url = `/api/get-latest-data?dataType=cases`//${dataType}`
+        if (!date){
+            const url = `/api/get-latest-data?dataType=cases`//${dataType}`
+        } else {
+            const url = `/api/get-data-by-date?dataType=cases`//${dataType}?date=${date.toISOString()}`
+        }
         fetch(url, fetchOptions)
             .then((res) => res.json())
             .then((data) => {
@@ -58,7 +62,7 @@ function Map({ mapData, dataType }) {
             color: "yellow",
             level: "600-800"
         }])
-    }, [])
+    }, [dataType, date])
 
     const logTest = (e) => {
         console.log(e.target)
