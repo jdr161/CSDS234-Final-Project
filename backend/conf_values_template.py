@@ -18,3 +18,4 @@ COUNTRY_ATTRIBUTES = ['value1', 'value2', 'value3'] #leave in brackets
 CASES_ATTRIBUTES = ['value1', 'value2', 'value3'] #leave in brackets
 DEATHS_ATTRIBUTES = ['value1', 'value2', 'value3'] #leave in brackets
 VACCINATIONS_ATTRIBUTES = ['value1', 'value2', 'value3'] #leave in brackets
+ALL_ATTRIBUTES = ['value1', 'value2', 'value3'] #leave in brackets

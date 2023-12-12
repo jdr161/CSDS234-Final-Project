@@ -34,7 +34,7 @@ def update_CSV():
     if (bytes_written != num_bytes):
         print("Bad Write")
 
-    dataframe = pd.read_csv(PATH_TO_DIR + CSV_NAME)
+    dataframe = pd.read_csv(PATH_TO_DIR + CSV_NAME, usecols=ALL_ATTRIBUTES, low_memory=True)
 
     create_all(dataframe)
 
