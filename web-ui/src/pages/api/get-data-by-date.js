@@ -17,7 +17,7 @@ export default async function handler(req, res) {
             //     by: ['iso_code'],
             //     where: {
             //         date: {
-            //             contains: 'prisma.io', GREATER THAN? LESS THAN? req.body.date
+            //             lte: req.query.date,
             //         },
             //     },
             //     _sum: {

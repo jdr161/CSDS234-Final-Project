@@ -23,11 +23,6 @@ export default async function handler(req, res) {
             return res.json(test)
             // const countryCases = await prisma.cases.groupBy({
             //     by: ['iso_code'],
-            //     where: {
-            //         date: {
-            //             lt: req.body.date,
-            //         },
-            //     },
             //     _sum: {
             //         new_cases: true,
             //     },
