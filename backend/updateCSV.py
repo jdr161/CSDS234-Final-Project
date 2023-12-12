@@ -7,6 +7,7 @@ import split_big_csv as split
 import pandas as pd
 
 
+
 def update_CSV():
 
     try:
@@ -28,31 +29,53 @@ def update_CSV():
     split.create_all(dataframe)
 
 
+def truncate(tablenames, con, cur):
+    for tablename in tablenames:
+        cur.execute("TRUNCATE " + DB_SCHEMA + "." + tablename)
+        con.commit()
+
+
+def copy_to_db(tablenames, con, cur):
+    for tablename in tablenames:
+        f = open(PATH_TO_DIR + tablename + ".csv", 'r')
+        f.readline()
+        cur.copy_from(f, tablename, sep=',', null="")
+        con.commit()
+        f.close()
+
+
+
 def connect_and_update():
 
-    with psycopg2.connect(user=DB_USER, password=DB_PASS, host=DB_HOST, port=DB_PORT, database=DB_NAME) as connection:
+    connection = psycopg2.connect(
+        user=DB_USER, password=DB_PASS, host=DB_HOST, port=DB_PORT, database=DB_NAME)
 
-        cursor = connection.cursor()
+    cursor = connection.cursor()
 
-        # open csv
-        for tablename in DB_TABLES:
-            with open(PATH_TO_DIR + tablename + ".csv", 'r') as f:
-                # skip header
-                f.readline()
+    truncate(DB_TABLES, connection, cursor)
 
-                # remove old data
-                cursor.execute("TRUNCATE " + DB_SCHEMA + "." + tablename)
+    copy_to_db(DB_TABLES, connection, cursor)
 
-                # commit
-                connection.commit()
-
-                # insert csv
-                cursor.copy_from(f, tablename, sep=',', null="")
-
-                # commit
-                connection.commit()
+    # open csv
+    # for tablename in DB_TABLES:
+    #    with open(PATH_TO_DIR + tablename + ".csv", 'r') as f:
+    #        # skip header
+    #        f.readline()
+    #
+    #        # remove old data
+    #        cursor.execute("TRUNCATE " + DB_SCHEMA + "." + tablename)
+    #
+    #        # commit
+    #        connection.commit()
+    #
+    #        # insert csv
+    #        cursor.copy_from(f, tablename, sep=',', null="")
+    #
+    #        # commit
+    #        connection.commit()
 
     connection.close()
+
 
 
 def main():
