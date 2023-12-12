@@ -12,6 +12,7 @@ import Info from "../info";
 import Legend from "../legend"
 import styles from "./map.module.css"
 import Gradient from "javascript-color-gradient";
+import CountryGeoJson from "../CountryGeoJson";
 
 var southWest = L.latLng(-85, -180)
 var northEast = L.latLng(85, 180)
@@ -33,6 +34,7 @@ function Map({ mapData, dataType, date }) {
     const [data, setData] = useState({})
 
     useEffect(() => {
+        console.log(mapData)
         const fetchOptions = {
             method: "GET", // *GET, POST, PUT, DELETE, etc.
             headers: {
@@ -112,9 +114,9 @@ function Map({ mapData, dataType, date }) {
 
     // Make sure we only rerender on relevant state updates
     const tileLayer = useMemo(() => <TileLayer attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors' url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />, [])
-    const geoJSON = useMemo(() => <GeoJSON style={countryStyle} data={mapData.features} onEachFeature={onEachCountry} />, []);
     const info = useMemo(() => <Info gradientArr={gradientArr} />, [gradientArr]);
     const legend = useMemo(() => <Legend selected={selected} />, [selected])
+    const geoJSON = useMemo(() => <CountryGeoJson mapData={mapData} data={data} getColor={(number) => {return "blue"}} setSelected={(val) => setSelected(val)} />, [data])
 
     return (
         <div className={styles.map}>
