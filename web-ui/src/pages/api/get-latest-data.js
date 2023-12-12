@@ -12,27 +12,32 @@ export default async function handler(req, res) {
     } else {
         // See which data type is needed (cases, deaths, or vaccinations)
         if (req.query.dataType === "cases") {
-            const test = await prisma.cases.findUnique({
-                where: {
-                    iso_code_date: {
-                        iso_code: "AFG",
-                        date: "2020-03-30",
-                    },
+            //const countryCases = await prisma.cases.groupBy({
+            const countryCases = await prisma.newtable.groupBy({
+                by: ['iso_code'],
+                _sum: {
+                    new_cases: true,
                 },
             })
-            return res.json(test)
-            // const countryCases = await prisma.cases.groupBy({
-            //     by: ['iso_code'],
-            //     _sum: {
-            //         new_cases: true,
-            //     },
-            // })
-            // return res.json(countryCases)
-            res.status(200).json({ name: 'John Doe' })
+            return res.json(countryCases)
         } else if (req.query.dataType === "deaths") {
-            res.status(200).json({ name: 'John Doe' })
+            //const countryCases = await prisma.deaths.groupBy({
+            const countryDeaths = await prisma.newtable.groupBy({
+                by: ['iso_code'],
+                _sum: {
+                    new_deaths: true,
+                },
+            })
+            return res.json(countryDeaths)
         } else if (req.query.dataType === "vaccinations") {
-            res.status(200).json({ name: 'John Doe' })
+            //const countryCases = await prisma.cases.groupBy({
+            const countryVaccinations = await prisma.newtable.groupBy({
+                by: ['iso_code'],
+                _sum: {
+                    new_vaccinations: true,
+                },
+            })
+            return res.json(countryVaccinations)
         } else {
             res.status(400).json({ message: 'dataType not recognized' })
         }
