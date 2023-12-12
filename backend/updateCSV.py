@@ -3,9 +3,19 @@
 import requests
 import psycopg2
 from conf_values import *
-import split_big_csv as split
+#import split_big_csv as split
 import pandas as pd
 
+
+def split_csv(df, attributes, filename):
+    df[attributes].drop_duplicates().to_csv(filename, index=False)
+
+
+def create_all(df):
+    split_csv(df, COUNTRY_ATTRIBUTES, PATH_TO_DIR + "country.csv")
+    split_csv(df, CASES_ATTRIBUTES, PATH_TO_DIR + "cases.csv")
+    split_csv(df, DEATHS_ATTRIBUTES, PATH_TO_DIR + "deaths.csv")
+    split_csv(df, VACCINATIONS_ATTRIBUTES, PATH_TO_DIR + "vaccinations.csv")
 
 
 def update_CSV():
@@ -26,7 +36,7 @@ def update_CSV():
 
     dataframe = pd.read_csv(PATH_TO_DIR + CSV_NAME)
 
-    split.create_all(dataframe)
+    create_all(dataframe)
 
 
 def truncate(tablenames, con, cur):
