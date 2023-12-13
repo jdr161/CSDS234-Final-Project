@@ -1,0 +1,117 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model cases {
+  iso_code              String   @db.VarChar(8)
+  date                  DateTime @db.Date
+  new_cases             Float?   @db.Real
+  new_cases_per_million Float?   @db.Real
+
+  @@id([iso_code, date])
+}
+
+model deaths {
+  iso_code               String   @db.VarChar(8)
+  date                   DateTime @db.Date
+  new_deaths             Float?   @db.Real
+  new_deaths_per_million Float?   @db.Real
+
+  @@id([iso_code, date])
+}
+
+model vaccinations {
+  iso_code                              String   @db.VarChar(8)
+  date                                  DateTime @db.Date
+  new_vaccinations                      Float?   @db.Real
+  new_vaccinations_smoothed_per_million Float?   @db.Real
+
+  @@id([iso_code, date])
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model country {
+  iso_code   String? @db.VarChar(50)
+  location   String? @db.VarChar(50)
+  continent  String? @db.VarChar(50)
+  population Float?  @db.Real
+
+  @@ignore
+}
+
+model newtable {
+  iso_code                                   String  @db.VarChar(50)
+  continent                                  String? @db.VarChar(50)
+  location                                   String? @db.VarChar(50)
+  date                                       String  @db.VarChar(50)
+  total_cases                                Float?  @db.Real
+  new_cases                                  Float?  @db.Real
+  new_cases_smoothed                         Float?  @db.Real
+  total_deaths                               Float?  @db.Real
+  new_deaths                                 Float?  @db.Real
+  new_deaths_smoothed                        Float?  @db.Real
+  total_cases_per_million                    Float?  @db.Real
+  new_cases_per_million                      Float?  @db.Real
+  new_cases_smoothed_per_million             Float?  @db.Real
+  total_deaths_per_million                   Float?  @db.Real
+  new_deaths_per_million                     Float?  @db.Real
+  new_deaths_smoothed_per_million            Float?  @db.Real
+  reproduction_rate                          Float?  @db.Real
+  icu_patients                               String? @db.VarChar(50)
+  icu_patients_per_million                   String? @db.VarChar(50)
+  hosp_patients                              String? @db.VarChar(50)
+  hosp_patients_per_million                  String? @db.VarChar(50)
+  weekly_icu_admissions                      String? @db.VarChar(50)
+  weekly_icu_admissions_per_million          String? @db.VarChar(50)
+  weekly_hosp_admissions                     String? @db.VarChar(50)
+  weekly_hosp_admissions_per_million         String? @db.VarChar(50)
+  total_tests                                String? @db.VarChar(50)
+  new_tests                                  String? @db.VarChar(50)
+  total_tests_per_thousand                   String? @db.VarChar(50)
+  new_tests_per_thousand                     String? @db.VarChar(50)
+  new_tests_smoothed                         String? @db.VarChar(50)
+  new_tests_smoothed_per_thousand            String? @db.VarChar(50)
+  positive_rate                              String? @db.VarChar(50)
+  tests_per_case                             String? @db.VarChar(50)
+  tests_units                                String? @db.VarChar(50)
+  total_vaccinations                         String? @db.VarChar(50)
+  people_vaccinated                          String? @db.VarChar(50)
+  people_fully_vaccinated                    String? @db.VarChar(50)
+  total_boosters                             String? @db.VarChar(50)
+  new_vaccinations                           String? @db.VarChar(50)
+  new_vaccinations_smoothed                  String? @db.VarChar(50)
+  total_vaccinations_per_hundred             String? @db.VarChar(50)
+  people_vaccinated_per_hundred              String? @db.VarChar(50)
+  people_fully_vaccinated_per_hundred        String? @db.VarChar(50)
+  total_boosters_per_hundred                 String? @db.VarChar(50)
+  new_vaccinations_smoothed_per_million      String? @db.VarChar(50)
+  new_people_vaccinated_smoothed             String? @db.VarChar(50)
+  new_people_vaccinated_smoothed_per_hundred String? @db.VarChar(50)
+  stringency_index                           Float?  @db.Real
+  population_density                         Float?  @db.Real
+  median_age                                 Float?  @db.Real
+  aged_65_older                              Float?  @db.Real
+  aged_70_older                              Float?  @db.Real
+  gdp_per_capita                             Float?  @db.Real
+  extreme_poverty                            String? @db.VarChar(50)
+  cardiovasc_death_rate                      Float?  @db.Real
+  diabetes_prevalence                        Float?  @db.Real
+  female_smokers                             String? @db.VarChar(50)
+  male_smokers                               String? @db.VarChar(50)
+  handwashing_facilities                     Float?  @db.Real
+  hospital_beds_per_thousand                 Float?  @db.Real
+  life_expectancy                            Float?  @db.Real
+  human_development_index                    Float?  @db.Real
+  population                                 Float?  @db.Real
+  excess_mortality_cumulative_absolute       String? @db.VarChar(50)
+  excess_mortality_cumulative                String? @db.VarChar(50)
+  excess_mortality                           String? @db.VarChar(50)
+  excess_mortality_cumulative_per_million    String? @db.VarChar(50)
+
+  @@id([iso_code, date])
+}
