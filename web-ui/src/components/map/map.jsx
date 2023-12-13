@@ -5,8 +5,8 @@ import {
 import L from "leaflet";
 import { useState, useMemo, useEffect } from "react";
 import "leaflet/dist/leaflet.css";
-import Info from "../info";
-import Legend from "../legend"
+import GradientInfo from "../gradientInfo";
+import CountryInfo from "../countryInfo"
 import styles from "./map.module.css"
 import chroma from "chroma-js";
 import CountryGeoJson from "../CountryGeoJson";
@@ -82,8 +82,8 @@ function Map({ mapData, dataType, date }) {
 
     // Make sure we only rerender on relevant state updates
     const tileLayer = useMemo(() => <TileLayer attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors' url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />, [])
-    const info = useMemo(() => <Info gradientArr={gradientArr} />, [gradientArr]);
-    const legend = useMemo(() => <Legend selected={selected} />, [selected])
+    const gradientInfo = useMemo(() => <GradientInfo gradientArr={gradientArr} />, [gradientArr]);
+    const countryInfo = useMemo(() => <CountryInfo selected={selected} />, [selected])
     const geoJSON = useMemo(() => <CountryGeoJson mapData={mapData} data={data} getColor={(val, max, min) => getColor(val, max, min)} setSelected={(val) => setSelected(val)} />, [data])
 
     return (
@@ -91,8 +91,8 @@ function Map({ mapData, dataType, date }) {
             <MapContainer center={[0, 0]} zoom={3} maxBounds={bounds} minZoom={2} maxZoom={6}>
                 {tileLayer}
                 {geoJSON}
-                {info}
-                {legend}
+                {gradientInfo}
+                {countryInfo}
             </MapContainer>
         </div>
     );

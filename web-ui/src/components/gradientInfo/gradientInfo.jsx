@@ -1,6 +1,6 @@
-import styles from "./info.module.css";
+import styles from "./gradientInfo.module.css";
 
-function Info({ gradientArr }) {
+function GradientInfo({ gradientArr }) {
     return (
         <div className={styles.hoverInfo}>
             {gradientArr[0] ? gradientArr.map((gradient, index) => {
@@ -15,4 +15,4 @@ function Info({ gradientArr }) {
     )
 }
 
-export default Info;
+export default GradientInfo;

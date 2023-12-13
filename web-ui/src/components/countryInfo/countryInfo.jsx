@@ -1,4 +1,4 @@
-import styles from "./legend.module.css";
+import styles from "./countryInfo.module.css";
 
 function Legend({selected}) {
 
