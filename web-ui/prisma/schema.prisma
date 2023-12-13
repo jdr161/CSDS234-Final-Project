@@ -8,34 +8,38 @@ datasource db {
 }
 
 model cases {
-  iso_code    String @db.VarChar(8)
-  date        String @db.VarChar(10)
-  total_cases Float? @db.Real
+  iso_code              String   @db.VarChar(8)
+  date                  DateTime @db.Date
+  new_cases             Float?   @db.Real
+  new_cases_per_million Float?   @db.Real
 
   @@id([iso_code, date])
 }
 
 model deaths {
-  iso_code     String @db.VarChar(8)
-  date         String @db.VarChar(10)
-  total_deaths Float? @db.Real
+  iso_code               String   @db.VarChar(8)
+  date                   DateTime @db.Date
+  new_deaths             Float?   @db.Real
+  new_deaths_per_million Float?   @db.Real
 
   @@id([iso_code, date])
 }
 
 model vaccinations {
-  iso_code           String  @db.VarChar(8)
-  date               String  @db.VarChar(10)
-  total_vaccinations String? @db.VarChar(50)
+  iso_code                              String   @db.VarChar(8)
+  date                                  DateTime @db.Date
+  new_vaccinations                      Float?   @db.Real
+  new_vaccinations_smoothed_per_million Float?   @db.Real
 
   @@id([iso_code, date])
 }
 
 /// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
 model country {
-  iso_code  String? @db.VarChar(50)
-  location  String? @db.VarChar(50)
-  continent String? @db.VarChar(50)
+  iso_code   String? @db.VarChar(50)
+  location   String? @db.VarChar(50)
+  continent  String? @db.VarChar(50)
+  population Float?  @db.Real
 
   @@ignore
 }
