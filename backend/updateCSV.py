@@ -3,7 +3,6 @@
 import requests
 import psycopg2
 from conf_values import *
-#import split_big_csv as split
 import pandas as pd
 
 
@@ -34,7 +33,8 @@ def update_CSV():
     if (bytes_written != num_bytes):
         print("Bad Write")
 
-    dataframe = pd.read_csv(PATH_TO_DIR + CSV_NAME, usecols=ALL_ATTRIBUTES, low_memory=True)
+    dataframe = pd.read_csv(PATH_TO_DIR + CSV_NAME,
+                            usecols=ALL_ATTRIBUTES, low_memory=True)
 
     create_all(dataframe)
 
@@ -54,7 +54,6 @@ def copy_to_db(tablenames, con, cur):
         f.close()
 
 
-
 def connect_and_update():
 
     connection = psycopg2.connect(
@@ -66,26 +65,7 @@ def connect_and_update():
 
     copy_to_db(DB_TABLES, connection, cursor)
 
-    # open csv
-    # for tablename in DB_TABLES:
-    #    with open(PATH_TO_DIR + tablename + ".csv", 'r') as f:
-    #        # skip header
-    #        f.readline()
-    #
-    #        # remove old data
-    #        cursor.execute("TRUNCATE " + DB_SCHEMA + "." + tablename)
-    #
-    #        # commit
-    #        connection.commit()
-    #
-    #        # insert csv
-    #        cursor.copy_from(f, tablename, sep=',', null="")
-    #
-    #        # commit
-    #        connection.commit()
-
     connection.close()
-
 
 
 def main():
