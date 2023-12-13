@@ -43,7 +43,22 @@ function CountryGeoJson({ mapData, data, getColor, setSelected }) {
 
     const highlightFeature = (e) => {
         let layer = e.target;
-        setSelected(layer.feature.properties);
+        let iso_code = layer.feature.properties.ISO_A3;
+        if(!data[iso_code]){
+            setSelected({
+                name: layer.feature.properties.ADMIN,
+                iso_code: iso_code,
+                count: -1,
+            });
+        } else {
+            let count = data[iso_code]
+            setSelected({
+                name: layer.feature.properties.ADMIN,
+                iso_code: iso_code,
+                count: count,
+            });
+
+        }
 
         layer.setStyle({
             weight: 5,
