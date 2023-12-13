@@ -1,11 +1,12 @@
 import prisma from '../../lib/prisma'
+import reduceData from '@/lib/reduceData'
 
 export default async function handler(req, res) {
     // Check for API password and correct request syntax
     if (!(req.method === "GET")) {
         res.status(405).json({ message: `expected method: GET, received: ${req.method}` })
-    } else if (!req.body.password) {
-        res.status(400).json({ message: 'no password provided, bozo' })
+    } else if (!req.headers.authorization) {
+        res.status(400).json({ message: 'basic authorization required, bozo' })
     } else if (!(`Basic ${btoa(`${process.env.API_USERNAME}:${process.env.API_PASSWORD}`)}` === req.headers.authorization)) {
         res.status(401).json({ message: 'wrong username or password, bozo' })
     } else if (!req.query.dataType) {
@@ -15,12 +16,12 @@ export default async function handler(req, res) {
     } else {
         // See which data type is needed (cases, deaths, or vaccinations)
         if (req.query.dataType === "cases") {
-            // const groupUsers = await prisma.cases.groupBy({
-            const countryCases = await prisma.newtable.groupBy({
+            const fullDate = (new Date(req.query.date)).toISOString()
+            const countryCases = await prisma.cases.groupBy({
                 by: ['iso_code'],
                 where: {
                     date: {
-                        lte: req.query.date,
+                        lte: fullDate,
                     },
                 },
                 _sum: {
@@ -29,30 +30,30 @@ export default async function handler(req, res) {
             })
             return res.json(reduceData(countryCases))
         } else if (req.query.dataType === "deaths") {
-            // const groupUsers = await prisma.cases.groupBy({
-            const countryDeaths = await prisma.newtable.groupBy({
+            const fullDate = (new Date(req.query.date)).toISOString()
+            const countryDeaths = await prisma.deaths.groupBy({
                 by: ['iso_code'],
                 where: {
                     date: {
-                        lte: req.query.date,
+                        lte: fullDate,
                     },
                 },
                 _sum: {
-                    new_cases: true,
+                    new_deaths: true,
                 },
             })
             return res.json(reduceData(countryDeaths))
         } else if (req.query.dataType === "vaccinations") {
-            // const groupUsers = await prisma.cases.groupBy({
-            const countryVaccinations = await prisma.newtable.groupBy({
+            const fullDate = (new Date(req.query.date)).toISOString()
+            const countryVaccinations = await prisma.vaccinations.groupBy({
                 by: ['iso_code'],
                 where: {
                     date: {
-                        lte: req.query.date,
+                        lte: fullDate,
                     },
                 },
                 _sum: {
-                    new_cases: true,
+                    new_vaccinations: true,
                 },
             })
             return res.json(reduceData(countryVaccinations))

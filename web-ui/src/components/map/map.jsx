@@ -31,9 +31,9 @@ function Map({ mapData, dataType, date }) {
         }
         let url = ''
         if (date === (new Date()).toISOString().split('T')[0]) {
-            url = `/api/get-latest-data?dataType=cases`//${dataType}`
+            url = `/api/get-latest-data?dataType=${dataType}`
         } else {
-            url = `/api/get-data-by-date?dataType=cases`//${dataType}?date=${date.toISOString()}`
+            url = `/api/get-data-by-date?dataType=${dataType}&date=${date}`
         }
         fetch(url, fetchOptions)
             .then((res) => res.json())

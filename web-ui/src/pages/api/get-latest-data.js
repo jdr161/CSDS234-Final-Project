@@ -13,8 +13,7 @@ export default async function handler(req, res) {
     } else {
         // See which data type is needed (cases, deaths, or vaccinations)
         if (req.query.dataType === "cases") {
-            //const countryCases = await prisma.cases.groupBy({
-            const countryCases = await prisma.newtable.groupBy({
+            const countryCases = await prisma.cases.groupBy({
                 by: ['iso_code'],
                 _sum: {
                     new_cases: true,
@@ -22,8 +21,7 @@ export default async function handler(req, res) {
             })
             return res.json(reduceData(countryCases))
         } else if (req.query.dataType === "deaths") {
-            //const countryCases = await prisma.deaths.groupBy({
-            const countryDeaths = await prisma.newtable.groupBy({
+            const countryDeaths = await prisma.deaths.groupBy({
                 by: ['iso_code'],
                 _sum: {
                     new_deaths: true,
@@ -31,8 +29,7 @@ export default async function handler(req, res) {
             })
             return res.json(reduceData(countryDeaths))
         } else if (req.query.dataType === "vaccinations") {
-            //const countryCases = await prisma.cases.groupBy({
-            const countryVaccinations = await prisma.newtable.groupBy({
+            const countryVaccinations = await prisma.vaccinations.groupBy({
                 by: ['iso_code'],
                 _sum: {
                     new_vaccinations: true,
