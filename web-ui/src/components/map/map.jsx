@@ -8,7 +8,7 @@ import "leaflet/dist/leaflet.css";
 import Info from "../info";
 import Legend from "../legend"
 import styles from "./map.module.css"
-import Gradient from "javascript-color-gradient";
+import chroma from "chroma-js";
 import CountryGeoJson from "../CountryGeoJson";
 
 var southWest = L.latLng(-85, -180)
@@ -43,10 +43,22 @@ function Map({ mapData, dataType, date }) {
             })
     }, [dataType, date])
 
+    const getColor = (val, min, max) => {
+        const percentage = (val - min)/(max - min);
+
+        if (dataType === "cases"){
+            let scale = chroma.scale(['white', 'red']);
+            return scale(percentage).hex();
+        } else if (dataType === "deaths"){
+            let scale = chroma.scale(['white', 'black']);
+            return scale(percentage).hex();
+        } else {
+            let scale = chroma.scale(['white', 'blue']);
+            return scale(percentage).hex();
+        }
+    }
+
     const calculateGradientArr = (data) => {
-        const colorArray = new Gradient()
-            .setColorGradient("#3F2CAF", "#e9446a")
-            .getColors();
         const arr = Object.values(data);
         const max = Math.max(...arr);
         const min = Math.min(...arr);
@@ -54,14 +66,15 @@ function Map({ mapData, dataType, date }) {
         for (let i = 0; i < 9; i++) {
             let val = min + i * ((max - min) / 9)
             let nextval = min + (i + 1) * ((max - min) / 9)
+
             gradArr[9 - i] = {
-                color: colorArray[i],
+                color: getColor(val, min, max),
                 level: val.toString().concat("-", nextval.toString())
             }
         }
         let val = min + 9 * ((max - min) / 9)
         gradArr[0] = {
-            color: colorArray[9],
+            color: getColor(val, min, max),
             level: val.toString().concat("+")
         }
         setgradientArr(gradArr)
@@ -71,7 +84,7 @@ function Map({ mapData, dataType, date }) {
     const tileLayer = useMemo(() => <TileLayer attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors' url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />, [])
     const info = useMemo(() => <Info gradientArr={gradientArr} />, [gradientArr]);
     const legend = useMemo(() => <Legend selected={selected} />, [selected])
-    const geoJSON = useMemo(() => <CountryGeoJson mapData={mapData} data={data} getColor={(number) => { return "blue" }} setSelected={(val) => setSelected(val)} />, [data])
+    const geoJSON = useMemo(() => <CountryGeoJson mapData={mapData} data={data} getColor={(val, max, min) => getColor(val, max, min)} setSelected={(val) => setSelected(val)} />, [data])
 
     return (
         <div className={styles.map}>
