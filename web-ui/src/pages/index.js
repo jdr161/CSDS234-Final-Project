@@ -10,11 +10,11 @@ export async function getStaticProps() {
 
 export default function Home({ geoJSON }) {
   const [dataType, setDataType] = useState("cases");
-  const [date, setDate] = useState(null);
+  const [date, setDate] = useState((new Date()).toISOString().split('T')[0]);
 
   return (
     <>
-      <Header dataType={dataType} setDataType={setDataType} date={date} setDate={setDate} />
+      <Header dataType={dataType} setDataType={(val) => setDataType(val)} date={date} setDate={(val) => setDate(val)} />
       <Map mapData={geoJSON} dataType={dataType} date={date}/>
     </>
   )

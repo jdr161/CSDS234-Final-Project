@@ -30,7 +30,7 @@ function Map({ mapData, dataType, date }) {
             },
         }
         let url = ''
-        if (!date) {
+        if (date === (new Date()).toISOString().split('T')[0]) {
             url = `/api/get-latest-data?dataType=cases`//${dataType}`
         } else {
             url = `/api/get-data-by-date?dataType=cases`//${dataType}?date=${date.toISOString()}`
