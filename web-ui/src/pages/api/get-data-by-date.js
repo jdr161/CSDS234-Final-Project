@@ -25,7 +25,7 @@ export default async function handler(req, res) {
                     },
                 },
                 _sum: {
-                    new_cases: true,
+                    new_cases_per_million: true,
                 },
             })
             return res.json(reduceData(countryCases))
@@ -39,7 +39,7 @@ export default async function handler(req, res) {
                     },
                 },
                 _sum: {
-                    new_deaths: true,
+                    new_deaths_per_million: true,
                 },
             })
             return res.json(reduceData(countryDeaths))
@@ -53,7 +53,7 @@ export default async function handler(req, res) {
                     },
                 },
                 _sum: {
-                    new_vaccinations: true,
+                    new_vaccinations_smoothed_per_million: true,
                 },
             })
             return res.json(reduceData(countryVaccinations))

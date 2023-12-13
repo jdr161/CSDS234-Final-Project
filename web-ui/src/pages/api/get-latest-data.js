@@ -16,7 +16,7 @@ export default async function handler(req, res) {
             const countryCases = await prisma.cases.groupBy({
                 by: ['iso_code'],
                 _sum: {
-                    new_cases: true,
+                    new_cases_per_million: true,
                 },
             })
             return res.json(reduceData(countryCases))
@@ -24,7 +24,7 @@ export default async function handler(req, res) {
             const countryDeaths = await prisma.deaths.groupBy({
                 by: ['iso_code'],
                 _sum: {
-                    new_deaths: true,
+                    new_deaths_per_million: true,
                 },
             })
             return res.json(reduceData(countryDeaths))
@@ -32,7 +32,7 @@ export default async function handler(req, res) {
             const countryVaccinations = await prisma.vaccinations.groupBy({
                 by: ['iso_code'],
                 _sum: {
-                    new_vaccinations: true,
+                    new_vaccinations_smoothed_per_million: true,
                 },
             })
             return res.json(reduceData(countryVaccinations))
