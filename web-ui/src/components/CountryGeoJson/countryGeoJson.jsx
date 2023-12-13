@@ -4,12 +4,10 @@ import { GeoJSON } from "react-leaflet";
 var hash = require('object-hash');
 
 function CountryGeoJson({ mapData, data, getColor, setSelected }) {
-    console.log(data)
     const [key, setKey] = useState(hash(data))
     
     const getCountryStyle = (layer) => {
         if (!data.USA){
-            console.log("CALLED OLD getCountryStyle()");
             return {
                 fillColor: 'gray',
                 fillOpacity: 1,
@@ -18,7 +16,6 @@ function CountryGeoJson({ mapData, data, getColor, setSelected }) {
                 fillOpacity: 0.7,
             };
         } else {
-            console.log("CALLED GOOD getCountryStyle()")
             const arr = Object.values(data);
             const max = Math.max(...arr);
             const min = Math.min(...arr);
@@ -66,7 +63,6 @@ function CountryGeoJson({ mapData, data, getColor, setSelected }) {
 
     const onEachCountry = (country, layer) => {
         const countryName = country.properties.ADMIN;
-        // console.log(countryName);
         layer.bindPopup(countryName);
 
         layer.on({
