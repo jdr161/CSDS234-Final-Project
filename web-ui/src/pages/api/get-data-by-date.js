@@ -24,9 +24,10 @@ export default async function handler(req, res) {
                         lte: fullDate,
                     },
                 },
-                _sum: {
-                    new_cases_per_million: true,
+                _max: {
+                    total_cases_per_million: true,
                 },
+                cacheStrategy: { swr: 600, ttl: 600 },
             })
             return res.json(reduceData(countryCases))
         } else if (req.query.dataType === "deaths") {
@@ -38,9 +39,10 @@ export default async function handler(req, res) {
                         lte: fullDate,
                     },
                 },
-                _sum: {
-                    new_deaths_per_million: true,
+                _max: {
+                    total_deaths_per_million: true,
                 },
+                cacheStrategy: { swr: 600, ttl: 600 },
             })
             return res.json(reduceData(countryDeaths))
         } else if (req.query.dataType === "vaccinations") {
@@ -52,9 +54,10 @@ export default async function handler(req, res) {
                         lte: fullDate,
                     },
                 },
-                _sum: {
-                    new_vaccinations_smoothed_per_million: true,
+                _max: {
+                    total_vaccinations_per_hundred: true,
                 },
+                cacheStrategy: { swr: 600, ttl: 600 },
             })
             return res.json(reduceData(countryVaccinations))
         } else {

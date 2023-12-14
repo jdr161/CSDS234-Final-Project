@@ -15,25 +15,28 @@ export default async function handler(req, res) {
         if (req.query.dataType === "cases") {
             const countryCases = await prisma.cases.groupBy({
                 by: ['iso_code'],
-                _sum: {
-                    new_cases_per_million: true,
+                _max: {
+                    total_cases_per_million: true,
                 },
+                cacheStrategy: { swr: 600, ttl: 600 },
             })
             return res.json(reduceData(countryCases))
         } else if (req.query.dataType === "deaths") {
             const countryDeaths = await prisma.deaths.groupBy({
                 by: ['iso_code'],
-                _sum: {
-                    new_deaths_per_million: true,
+                _max: {
+                    total_deaths_per_million: true,
                 },
+                cacheStrategy: { swr: 600, ttl: 600 },
             })
             return res.json(reduceData(countryDeaths))
         } else if (req.query.dataType === "vaccinations") {
             const countryVaccinations = await prisma.vaccinations.groupBy({
                 by: ['iso_code'],
-                _sum: {
-                    new_vaccinations_smoothed_per_million: true,
+                _max: {
+                    total_vaccinations_per_hundred: true,
                 },
+                cacheStrategy: { swr: 600, ttl: 600 },
             })
             return res.json(reduceData(countryVaccinations))
         } else {
