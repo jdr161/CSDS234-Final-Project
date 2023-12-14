@@ -3,36 +3,39 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
   directUrl = env("DIRECT_DATABASE_URL")
 }
 
 model cases {
-  iso_code              String   @db.VarChar(8)
-  date                  DateTime @db.Date
-  new_cases             Float?   @db.Real
-  new_cases_per_million Float?   @db.Real
+  iso_code                String   @db.VarChar(8)
+  date                    DateTime @db.Date
+  total_cases_per_million Float?   @db.Real
 
   @@id([iso_code, date])
+  @@index([date], map: "cases_date")
+  @@index([total_cases_per_million], map: "cases_total")
 }
 
 model deaths {
-  iso_code               String   @db.VarChar(8)
-  date                   DateTime @db.Date
-  new_deaths             Float?   @db.Real
-  new_deaths_per_million Float?   @db.Real
+  iso_code                 String   @db.VarChar(8)
+  date                     DateTime @db.Date
+  total_deaths_per_million Float?   @db.Real
 
   @@id([iso_code, date])
+  @@index([date], map: "deaths_date")
+  @@index([total_deaths_per_million], map: "deaths_total")
 }
 
 model vaccinations {
-  iso_code                              String   @db.VarChar(8)
-  date                                  DateTime @db.Date
-  new_vaccinations                      Float?   @db.Real
-  new_vaccinations_smoothed_per_million Float?   @db.Real
+  iso_code                       String   @db.VarChar(8)
+  date                           DateTime @db.Date
+  total_vaccinations_per_hundred String?  @db.VarChar(50)
 
   @@id([iso_code, date])
+  @@index([date], map: "vaccinations_date")
+  @@index([total_vaccinations_per_hundred], map: "vaccinations_total")
 }
 
 /// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.

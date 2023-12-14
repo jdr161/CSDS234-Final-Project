@@ -1,8 +1,8 @@
 -- CreateTable
 CREATE TABLE "cases" (
     "iso_code" VARCHAR(8) NOT NULL,
-    "date" VARCHAR(10) NOT NULL,
-    "total_cases" REAL,
+    "date" DATE NOT NULL,
+    "total_cases_per_million" REAL,
 
     CONSTRAINT "cases_pkey" PRIMARY KEY ("iso_code","date")
 );
@@ -10,8 +10,8 @@ CREATE TABLE "cases" (
 -- CreateTable
 CREATE TABLE "deaths" (
     "iso_code" VARCHAR(8) NOT NULL,
-    "date" VARCHAR(10) NOT NULL,
-    "total_deaths" REAL,
+    "date" DATE NOT NULL,
+    "total_deaths_per_million" REAL,
 
     CONSTRAINT "deaths_pkey" PRIMARY KEY ("iso_code","date")
 );
@@ -19,8 +19,8 @@ CREATE TABLE "deaths" (
 -- CreateTable
 CREATE TABLE "vaccinations" (
     "iso_code" VARCHAR(8) NOT NULL,
-    "date" VARCHAR(10) NOT NULL,
-    "total_vaccinations" VARCHAR(50),
+    "date" DATE NOT NULL,
+    "total_vaccinations_per_hundred" VARCHAR(50),
 
     CONSTRAINT "vaccinations_pkey" PRIMARY KEY ("iso_code","date")
 );
@@ -29,7 +29,8 @@ CREATE TABLE "vaccinations" (
 CREATE TABLE "country" (
     "iso_code" VARCHAR(50),
     "location" VARCHAR(50),
-    "continent" VARCHAR(50)
+    "continent" VARCHAR(50),
+    "population" REAL
 );
 
 -- CreateTable
@@ -104,4 +105,22 @@ CREATE TABLE "newtable" (
 
     CONSTRAINT "newtable_pkey" PRIMARY KEY ("iso_code","date")
 );
+
+-- CreateIndex
+CREATE INDEX "cases_date" ON "cases"("date");
+
+-- CreateIndex
+CREATE INDEX "cases_total" ON "cases"("total_cases_per_million");
+
+-- CreateIndex
+CREATE INDEX "deaths_date" ON "deaths"("date");
+
+-- CreateIndex
+CREATE INDEX "deaths_total" ON "deaths"("total_deaths_per_million");
+
+-- CreateIndex
+CREATE INDEX "vaccinations_date" ON "vaccinations"("date");
+
+-- CreateIndex
+CREATE INDEX "vaccinations_total" ON "vaccinations"("total_vaccinations_per_hundred");
 
