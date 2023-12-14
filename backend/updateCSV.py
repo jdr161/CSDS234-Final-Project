@@ -11,7 +11,7 @@ def split_csv(df, attributes, filename):
 
 
 def create_all(df):
-    split_csv(df, COUNTRY_ATTRIBUTES, PATH_TO_DIR + "country.csv")
+    #split_csv(df, COUNTRY_ATTRIBUTES, PATH_TO_DIR + "country.csv")
     split_csv(df, CASES_ATTRIBUTES, PATH_TO_DIR + "cases.csv")
     split_csv(df, DEATHS_ATTRIBUTES, PATH_TO_DIR + "deaths.csv")
     split_csv(df, VACCINATIONS_ATTRIBUTES, PATH_TO_DIR + "vaccinations.csv")
