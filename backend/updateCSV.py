@@ -53,6 +53,10 @@ def copy_to_db(tablenames, con, cur):
         con.commit()
         f.close()
 
+def refresh_matviews(matviews, con, cur):
+    for matview in matviews:
+        cur.execute("REFRESH MATERIALIZED VIEW " + matview)
+        con.commit()
 
 def connect_and_update():
 
@@ -64,6 +68,8 @@ def connect_and_update():
     truncate(DB_TABLES, connection, cursor)
 
     copy_to_db(DB_TABLES, connection, cursor)
+
+    refresh_matviews(MATERIALIZED_VIEWS, connection, cursor)
 
     connection.close()
 
